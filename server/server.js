@@ -13,8 +13,30 @@ const statsRoutes = require('./routes/stats.routes');
 const app = express();
 
 // Middleware
+// Parse allowed origins from env or use defaults
+const allowedOrigins = (process.env.CLIENT_URL || '')
+    .split(',')
+    .map(url => url.trim())
+    .filter(Boolean);
+
+// Default fallbacks if env is empty
+if (allowedOrigins.length === 0) {
+    allowedOrigins.push('http://localhost:5173');
+}
+
+// Add Vercel app explicitly if not in env
+if (!allowedOrigins.includes('https://place-agurom.vercel.app')) {
+    allowedOrigins.push('https://place-agurom.vercel.app');
+}
+
 app.use(cors({
-    origin: '*', // Allow all during development for easier setup
+    origin: function (origin, callback) {
+        if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     credentials: true
 }));
 app.use(express.json());

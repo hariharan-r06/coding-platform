@@ -1,37 +1,37 @@
-# Dependencies
-node_modules
-.pnp
-.pnp.js
-
-# Testing
-coverage
-
-# Production
-dist
-build
-
-# Misc
+# Common
+node_modules/
 .DS_Store
-*.pem
-
-# Debug
+dist/
+build/
+coverage/
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+.deployment
 
 # Environment Variables
 .env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+.env.*
+!.env.example
+!.env.production
+!.env.development
 
 # Editor
-.vscode/*
-!.vscode/extensions.json
-.idea
+.vscode/
+.idea/
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+
+# Temporary files
+connection-result.txt
+
+# Server specific
+server/connection-result.txt
+
+# Client specific
+client/dist/ 
+# (Redundant with top-level dist/ but safe)
