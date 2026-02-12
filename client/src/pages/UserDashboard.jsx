@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
-import { BookOpen, CheckCircle, Clock, Trophy } from 'lucide-react';
+import { BookOpen, CheckCircle, Trophy } from 'lucide-react';
 import PatternCard from '../components/user/PatternCard';
 import ProgressChart from '../components/user/ProgressChart';
 
@@ -32,70 +32,115 @@ const UserDashboard = () => {
 
     if (loading) return <div>Loading dashboard...</div>;
 
+    // Helper to map pattern stats by name/id for easy access
+    const patternStats = stats?.pattern_breakdown?.reduce((acc, curr) => {
+        acc[curr.name] = curr;
+        return acc;
+    }, {}) || {};
+
     return (
         <div className="animate-fade">
-            <header style={{ marginBottom: '2.5rem' }}>
-                <h1 style={{ fontSize: '2rem', marginBottom: '0.25rem' }}>Hello, {user.full_name.split(' ')[0]} 👋</h1>
-                <p style={{ color: 'var(--text-muted)' }}>Here's your coding progress for today.</p>
+            <header className="mb-8">
+                <h1 className="text-primary">Hello, {user.full_name.split(' ')[0]}</h1>
+                <p className="text-lg">Here's your coding progress for today.</p>
             </header>
 
             {/* Stats Overview */}
-            <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', marginBottom: '2.5rem' }}>
-                <div className="card glass" style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
-                    <div style={{ background: 'rgba(99, 102, 241, 0.1)', color: 'var(--primary)', padding: '1rem', borderRadius: 'var(--radius)' }}>
+            <div className="grid grid-cols-3 mb-8">
+                <div className="card stat-card glass">
+                    <div className="stat-icon" style={{ color: 'var(--primary)', background: 'rgba(99, 102, 241, 0.1)' }}>
                         <Trophy size={28} />
                     </div>
                     <div>
-                        <div style={{ fontSize: '1.5rem', fontWeight: 700 }}>{stats?.total_solved}</div>
-                        <div style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>Problems Solved</div>
+                        <div className="text-2xl font-bold">
+                            {stats?.overview?.solved || 0}
+                            <span className="text-sm text-muted font-normal ml-1">/ {stats?.overview?.total || 0}</span>
+                        </div>
+                        <div className="text-sm text-muted">Problems Solved</div>
                     </div>
                 </div>
 
-                <div className="card glass" style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
-                    <div style={{ background: 'rgba(236, 72, 153, 0.1)', color: 'var(--secondary)', padding: '1rem', borderRadius: 'var(--radius)' }}>
+                <div className="card stat-card glass">
+                    <div className="stat-icon" style={{ color: 'var(--secondary)', background: 'rgba(236, 72, 153, 0.1)' }}>
                         <BookOpen size={28} />
                     </div>
                     <div>
-                        <div style={{ fontSize: '1.5rem', fontWeight: 700 }}>{patterns.length}</div>
-                        <div style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>Patterns Available</div>
+                        <div className="text-2xl font-bold">{patterns.length}</div>
+                        <div className="text-sm text-muted">Patterns Available</div>
                     </div>
                 </div>
 
-                <div className="card glass" style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
-                    <div style={{ background: 'rgba(16, 185, 129, 0.1)', color: 'var(--success)', padding: '1rem', borderRadius: 'var(--radius)' }}>
+                <div className="card stat-card glass">
+                    <div className="stat-icon" style={{ color: 'var(--success)', background: 'rgba(16, 185, 129, 0.1)' }}>
                         <CheckCircle size={28} />
                     </div>
                     <div>
-                        <div style={{ fontSize: '1.5rem', fontWeight: 700 }}>{Math.round((stats?.total_solved / 100) * 100) || 0}%</div>
-                        <div style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>Practice Goal</div>
+                        <div className="text-2xl font-bold">{stats?.overview?.percentage || 0}%</div>
+                        <div className="text-sm text-muted">Completion Rate</div>
                     </div>
                 </div>
             </div>
 
-            <div className="grid" style={{ gridTemplateColumns: '2fr 1fr', alignItems: 'start' }}>
+            <div className="grid" style={{ gridTemplateColumns: '2fr 1fr', gap: '2rem' }}>
                 {/* Pattern List */}
                 <section>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                        <h2 style={{ fontSize: '1.5rem', margin: 0 }}>Problem Patterns</h2>
-                        <button className="btn-secondary" style={{ fontSize: '0.875rem' }}>View All</button>
+                    <div className="flex justify-between items-center mb-4">
+                        <h2>Problem Patterns</h2>
+                        <button className="btn btn-secondary text-sm">View All</button>
                     </div>
-                    <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))' }}>
+                    <div className="grid grid-cols-2 gap-4">
                         {patterns.map(pattern => (
-                            <PatternCard key={pattern.id} pattern={pattern} />
+                            <PatternCard
+                                key={pattern.id}
+                                pattern={pattern}
+                                progress={patternStats[pattern.name] || { solved: 0, total: 0 }}
+                            />
                         ))}
                     </div>
                 </section>
 
                 {/* Analytics */}
-                <section>
-                    <h2 style={{ fontSize: '1.5rem', marginBottom: '1.5rem' }}>Analytics</h2>
-                    <div className="card glass">
-                        <h3 style={{ fontSize: '1rem', marginBottom: '1.5rem' }}>Solved by Difficulty</h3>
-                        <ProgressChart data={stats?.by_difficulty} type="doughnut" />
+                <section className="flex flex-col gap-6">
+                    <div>
+                        <h2 className="mb-4">Analytics</h2>
+                        <div className="card glass flex flex-col gap-4">
+                            <h3 className="text-lg font-semibold">Solved by Difficulty</h3>
+                            <div className="flex flex-col gap-3 p-2">
+                                {stats?.difficulty_breakdown?.map(item => (
+                                    <div key={item.label} className="flex items-center justify-between text-sm">
+                                        <div className="font-medium text-muted">{item.label}</div>
+                                        <div className="flex items-center gap-3">
+                                            <span className="font-bold text-white">{item.solved}/{item.total}</span>
+                                            <div className="w-24 h-2 bg-white/10 rounded-full overflow-hidden">
+                                                <div
+                                                    className={`h-full rounded-full ${item.label === 'Easy' ? 'bg-success' :
+                                                        item.label === 'Medium' ? 'bg-warning' : 'bg-error'
+                                                        }`}
+                                                    style={{ width: `${item.percentage}%` }}
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                                {(!stats?.difficulty_breakdown || stats.difficulty_breakdown.length === 0) &&
+                                    <p className="text-muted text-sm">No data available yet.</p>
+                                }
+                            </div>
+                        </div>
                     </div>
-                    <div className="card glass" style={{ marginTop: '1.5rem' }}>
-                        <h3 style={{ fontSize: '1rem', marginBottom: '1.5rem' }}>Solved by Pattern</h3>
-                        <ProgressChart data={stats?.by_pattern} type="bar" />
+
+                    <div className="card glass flex flex-col gap-4">
+                        <h3 className="text-lg font-semibold">Solved by Pattern</h3>
+                        <div className="p-2">
+                            <ProgressChart
+                                data={stats?.pattern_breakdown?.map(p => ({
+                                    name: p.name,
+                                    count: p.solved,
+                                    total: p.total
+                                }))}
+                                type="bar"
+                            />
+                        </div>
                     </div>
                 </section>
             </div>

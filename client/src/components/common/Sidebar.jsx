@@ -20,8 +20,8 @@ const Sidebar = () => {
 
     return (
         <aside className="sidebar">
-            <div className="sidebar-group">
-                <div style={{ padding: '0 1rem 0.75rem', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', color: 'var(--text-muted)' }}>
+            <div className="flex flex-col gap-2">
+                <div className="px-4 pb-2 text-xs font-bold uppercase text-muted tracking-wider">
                     Menu
                 </div>
                 {links.map(link => (
@@ -34,6 +34,12 @@ const Sidebar = () => {
                         <span>{link.label}</span>
                     </NavLink>
                 ))}
+            </div>
+
+            <div className="mt-auto px-4 py-6 border-t border-white/5">
+                <div className="text-xs text-muted text-center">
+                    &copy; 2026 CodePractice
+                </div>
             </div>
         </aside>
     );

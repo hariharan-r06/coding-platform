@@ -13,24 +13,28 @@ const Navbar = () => {
     };
 
     return (
-        <nav className="navbar">
-            <Link to="/" className="logo" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 700, fontSize: '1.25rem' }}>
-                <Code2 color="var(--primary)" size={32} />
-                <span>CodePractice</span>
+        <nav className="navbar glass border-b border-white/5">
+            <Link to="/" className="flex items-center gap-2 font-bold text-xl text-primary hover:opacity-80 transition-opacity">
+                <Code2 className="text-primary" size={32} strokeWidth={2.5} />
+                <span className="text-white tracking-tight">Code<span className="text-primary">Practice</span></span>
             </Link>
 
-            <div className="nav-actions" style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-                <div className="user-info" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                    <div className="avatar" style={{ width: 32, height: 32, borderRadius: '50%', background: 'var(--surface-light)', display: 'flex', alignItems: 'center', justifyCenter: 'center' }}>
+            <div className="flex items-center gap-6">
+                <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white shadow-lg shadow-indigo-500/20">
                         <UserIcon size={18} />
                     </div>
-                    <div className="user-details" style={{ fontSize: '0.875rem' }}>
-                        <div style={{ fontWeight: 600 }}>{user?.full_name}</div>
-                        <div style={{ color: 'var(--text-muted)', fontSize: '0.75rem' }}>{user?.role === 'admin' ? 'Administrator' : 'Explorer'}</div>
+                    <div className="hidden md:block text-sm">
+                        <div className="font-semibold text-white">{user?.full_name}</div>
+                        <div className="text-xs text-muted uppercase tracking-wider font-medium">{user?.role === 'admin' ? 'Administrator' : 'Explorer'}</div>
                     </div>
                 </div>
 
-                <button onClick={handleLogout} className="btn-secondary" style={{ padding: '0.5rem', borderRadius: '50%' }} title="Logout">
+                <button
+                    onClick={handleLogout}
+                    className="p-2 rounded-full hover:bg-white/10 text-muted hover:text-error transition-colors"
+                    title="Logout"
+                >
                     <LogOut size={20} />
                 </button>
             </div>
