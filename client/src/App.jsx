@@ -7,7 +7,6 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import UserDashboard from './pages/UserDashboard';
 import AdminDashboard from './pages/AdminDashboard';
-import PatternsPage from './pages/PatternsPage';
 import ProblemsPage from './pages/ProblemsPage';
 import SubmissionsPage from './pages/SubmissionsPage';
 import ProfilePage from './pages/ProfilePage';
@@ -56,15 +55,8 @@ const App = () => {
             </ProtectedRoute>
           } />
 
-          <Route path="/patterns" element={
-            <ProtectedRoute>
-              <AppLayout>
-                <PatternsPage />
-              </AppLayout>
-            </ProtectedRoute>
-          } />
 
-          <Route path="/problems" element={
+          <Route path="/patterns" element={
             <ProtectedRoute>
               <AppLayout>
                 <ProblemsPage />

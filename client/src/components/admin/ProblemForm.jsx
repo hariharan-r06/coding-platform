@@ -6,6 +6,7 @@ const ProblemForm = ({ problem = null, onClose }) => {
     const [formData, setFormData] = useState({
         title: problem?.title || '',
         problem_link: problem?.problem_link || '',
+        youtube_url: problem?.youtube_url || '',
         pattern_id: problem?.pattern_id || '',
         difficulty: problem?.difficulty || 'Easy',
         platform: problem?.platform || 'LeetCode'
@@ -79,6 +80,17 @@ const ProblemForm = ({ problem = null, onClose }) => {
                             onChange={(e) => setFormData({ ...formData, problem_link: e.target.value })}
                             style={{ width: '100%' }}
                             required
+                        />
+                    </div>
+
+                    <div className="form-group">
+                        <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600 }}>YouTube Solution (Optional)</label>
+                        <input
+                            type="url"
+                            placeholder="https://youtube.com/watch?v=..."
+                            value={formData.youtube_url || ''}
+                            onChange={(e) => setFormData({ ...formData, youtube_url: e.target.value })}
+                            style={{ width: '100%' }}
                         />
                     </div>
 

@@ -9,7 +9,6 @@ const Sidebar = () => {
     const links = [
         { to: '/', icon: <LayoutDashboard size={20} />, label: 'Dashboard' },
         { to: '/patterns', icon: <BookOpen size={20} />, label: 'Patterns' },
-        { to: '/problems', icon: <CheckSquare size={20} />, label: 'Problems' },
         { to: '/submissions', icon: <BarChart3 size={20} />, label: 'Submissions' },
         { to: '/profile', icon: <User size={20} />, label: 'Profile' },
     ];
