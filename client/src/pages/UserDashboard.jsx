@@ -34,7 +34,7 @@ const UserDashboard = () => {
 
     // Helper to map pattern stats by name/id for easy access
     const patternStats = stats?.pattern_breakdown?.reduce((acc, curr) => {
-        acc[curr.name] = curr;
+        acc[curr.id] = curr;
         return acc;
     }, {}) || {};
 
@@ -93,7 +93,7 @@ const UserDashboard = () => {
                             <PatternCard
                                 key={pattern.id}
                                 pattern={pattern}
-                                progress={patternStats[pattern.name] || { solved: 0, total: 0 }}
+                                progress={patternStats[pattern.id] || { solved: 0, total: 0 }}
                             />
                         ))}
                     </div>
