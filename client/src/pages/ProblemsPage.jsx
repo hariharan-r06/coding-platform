@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
-import { Filter, Search, ChevronDown, ChevronRight, CheckCircle, Youtube } from 'lucide-react';
+import { Filter, Search, ChevronDown, ChevronRight, CheckCircle, Youtube, ExternalLink, Video } from 'lucide-react';
 import SubmissionForm from '../components/user/SubmissionForm';
 
 const ProblemsPage = () => {
@@ -240,31 +240,65 @@ const ProblemsPage = () => {
                                                             }
                                                         </td>
                                                         <td style={{ padding: '1rem 1.5rem' }}>
-                                                            <div style={{ fontWeight: 500, color: 'var(--text)' }}>
-                                                                <a href={prob.problem_link} target="_blank" rel="noreferrer" className="hover:text-primary transition-colors">
+                                                            <div style={{ fontWeight: 500 }}>
+                                                                <a href={prob.problem_link} target="_blank" rel="noreferrer" className="text-primary hover:text-accent transition-colors flex items-center gap-1">
                                                                     {prob.title}
+                                                                    <ExternalLink size={12} />
                                                                 </a>
                                                             </div>
                                                             <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{prob.platform}</div>
                                                         </td>
                                                         <td style={{ padding: '1rem 1.5rem' }}>
-                                                            <span style={{ color: getDifficultyColor(prob.difficulty), fontWeight: 500 }}>
-                                                                {prob.difficulty}
-                                                            </span>
+                                                            <div className="flex items-center gap-2">
+                                                                <span style={{ color: getDifficultyColor(prob.difficulty), fontWeight: 500 }}>
+                                                                    {prob.difficulty}
+                                                                </span>
+
+                                                                {/* Helper to show submission status/feedback */}
+                                                                {userSubmissions[prob.id] && (
+                                                                    <div className={`text-xs px-2 py-0.5 rounded-full flex items-center gap-1
+                                                                        ${userSubmissions[prob.id].status === 'approved' ? 'bg-green-500/10 text-success' :
+                                                                            userSubmissions[prob.id].status === 'rejected' ? 'bg-red-500/10 text-error' :
+                                                                                'bg-amber-500/10 text-warning'
+                                                                        }`}>
+                                                                        {userSubmissions[prob.id].status.charAt(0).toUpperCase() + userSubmissions[prob.id].status.slice(1)}
+                                                                        {userSubmissions[prob.id].admin_notes && (
+                                                                            <div className="group relative ml-1">
+                                                                                <div className="cursor-help text-current opacity-80 hover:opacity-100">
+                                                                                    ?
+                                                                                </div>
+                                                                                {/* Tooltip */}
+                                                                                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 p-2 bg-surface border border-white/10 rounded-lg shadow-xl text-xs text-white invisible group-hover:visible z-10">
+                                                                                    <div className="font-semibold mb-1 opacity-60">Admin Feedback:</div>
+                                                                                    {userSubmissions[prob.id].admin_notes}
+                                                                                </div>
+                                                                            </div>
+                                                                        )}
+                                                                    </div>
+                                                                )}
+                                                            </div>
                                                         </td>
                                                         <td style={{ padding: '1rem 1.5rem' }}>
-                                                            {prob.youtube_url ? (
-                                                                <a href={prob.youtube_url} target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-muted)', textDecoration: 'none' }} className="hover:text-error transition-colors">
-                                                                    <Youtube size={20} color="var(--error)" />
-                                                                    <span style={{ fontSize: '0.85rem' }}>Watch</span>
-                                                                </a>
-                                                            ) : (
-                                                                <span style={{ color: 'var(--border)', fontSize: '0.85rem' }}>N/A</span>
-                                                            )}
+                                                            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                                                                {prob.our_video_url && (
+                                                                    <a href={prob.our_video_url} target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', textDecoration: 'none' }} className="text-primary hover:text-accent transition-colors">
+                                                                        <Video size={16} />
+                                                                        <span style={{ fontSize: '0.85rem', fontWeight: 600 }}>Our Solution</span>
+                                                                    </a>
+                                                                )}
+                                                                {prob.youtube_url && (
+                                                                    <a href={prob.youtube_url} target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-muted)', textDecoration: 'none' }} className="hover:text-error transition-colors">
+                                                                        <Youtube size={16} className="text-error" />
+                                                                        <span style={{ fontSize: '0.8rem' }}>Reference</span>
+                                                                    </a>
+                                                                )}
+                                                                {!prob.youtube_url && !prob.our_video_url && (
+                                                                    <span style={{ color: 'var(--border)', fontSize: '0.85rem' }}>N/A</span>
+                                                                )}
+                                                            </div>
                                                         </td>
                                                         <td style={{ padding: '1rem 1.5rem', textAlign: 'right' }}>
                                                             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '1rem' }}>
-                                                                {/* Last submitted date if exists */}
                                                                 {userSubmissions[prob.id] && (
                                                                     <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
                                                                         {new Date(userSubmissions[prob.id].date).toLocaleDateString()}
@@ -275,7 +309,7 @@ const ProblemsPage = () => {
                                                                     className="btn btn-secondary"
                                                                     style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem' }}
                                                                 >
-                                                                    {userSubmissions[prob.id] ? 'Resubmit' : 'Solve'}
+                                                                    {userSubmissions[prob.id] ? 'Resubmit' : 'Submit'}
                                                                 </button>
                                                             </div>
                                                         </td>
@@ -288,20 +322,22 @@ const ProblemsPage = () => {
                             </div>
                         );
                     })}
-                </div>
+                </div >
             )}
 
-            {isFormOpen && (
-                <SubmissionForm
-                    problem={selectedProblem}
-                    onClose={() => setIsFormOpen(false)}
-                    onSuccess={() => {
-                        setIsFormOpen(false);
-                        fetchData(); // Refresh to update status
-                    }}
-                />
-            )}
-        </div>
+            {
+                isFormOpen && (
+                    <SubmissionForm
+                        problem={selectedProblem}
+                        onClose={() => setIsFormOpen(false)}
+                        onSuccess={() => {
+                            setIsFormOpen(false);
+                            fetchData(); // Refresh to update status
+                        }}
+                    />
+                )
+            }
+        </div >
     );
 };
 

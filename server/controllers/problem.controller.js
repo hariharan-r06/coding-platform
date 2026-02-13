@@ -36,13 +36,14 @@ const getProblemById = async (req, res) => {
 
 const createProblem = async (req, res) => {
     try {
-        const { title, problem_link, youtube_url, pattern_id, difficulty, platform } = req.body;
+        const { title, problem_link, youtube_url, our_video_url, pattern_id, difficulty, platform } = req.body;
         const { data, error } = await supabase
             .from('problems')
             .insert([{
                 title,
                 problem_link,
                 youtube_url,
+                our_video_url,
                 pattern_id,
                 difficulty,
                 platform,
@@ -61,13 +62,14 @@ const createProblem = async (req, res) => {
 const updateProblem = async (req, res) => {
     try {
         const { id } = req.params;
-        const { title, problem_link, youtube_url, pattern_id, difficulty, platform } = req.body;
+        const { title, problem_link, youtube_url, our_video_url, pattern_id, difficulty, platform } = req.body;
         const { data, error } = await supabase
             .from('problems')
             .update({
                 title,
                 problem_link,
                 youtube_url,
+                our_video_url,
                 pattern_id,
                 difficulty,
                 platform,

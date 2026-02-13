@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { LogOut, User as UserIcon, Code2, Menu } from 'lucide-react';
 
+import NotificationBell from './NotificationBell';
+
 const Navbar = ({ onMenuClick }) => {
     const { user, logout } = useAuth();
     const navigate = useNavigate();
@@ -25,6 +27,8 @@ const Navbar = ({ onMenuClick }) => {
             </div>
 
             <div className="flex items-center gap-6">
+                <NotificationBell />
+
                 <div className="flex items-center gap-3">
                     <div className="w-9 h-9 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white shadow-lg shadow-indigo-500/20">
                         <UserIcon size={18} />

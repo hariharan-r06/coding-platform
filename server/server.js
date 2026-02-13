@@ -49,6 +49,7 @@ app.use('/api/patterns', patternRoutes);
 app.use('/api/problems', problemRoutes);
 app.use('/api/submissions', submissionRoutes);
 app.use('/api/stats', statsRoutes);
+app.use('/api/notifications', require('./routes/notification.routes'));
 
 // Root route
 app.get('/', (req, res) => {

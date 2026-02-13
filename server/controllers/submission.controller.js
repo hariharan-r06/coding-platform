@@ -99,6 +99,19 @@ const createSubmission = async (req, res) => {
             throw error;
         }
 
+        // Notify Admins
+        const { data: admins } = await supabase.from('users').select('id').eq('role', 'admin');
+        if (admins && admins.length > 0) {
+            const notifications = admins.map(admin => ({
+                user_id: admin.id,
+                type: 'new_submission',
+                title: 'New Submission',
+                message: `A new submission has been received.`, // Could add problem title if fetched
+                is_read: false
+            }));
+            await supabase.from('notifications').insert(notifications);
+        }
+
         res.status(201).json(data);
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -197,7 +210,7 @@ const deleteSubmission = async (req, res) => {
 const updateStatus = async (req, res) => {
     try {
         const { id } = req.params;
-        const { status } = req.body;
+        const { status, admin_notes } = req.body;
 
         if (!['approved', 'rejected', 'pending'].includes(status)) {
             return res.status(400).json({ error: 'Invalid status' });
@@ -205,12 +218,34 @@ const updateStatus = async (req, res) => {
 
         const { data, error } = await supabase
             .from('submissions')
-            .update({ status, updated_at: new Date() })
+            .update({
+                status,
+                admin_notes,
+                updated_at: new Date()
+            })
             .eq('id', id)
-            .select()
+            .select('*, problems(title)')
             .single();
 
         if (error) throw error;
+
+        // Notify User
+        if (data) {
+            const message = status === 'approved'
+                ? `Great job! Your solution for "${data.problems?.title || 'problem'}" has been approved.`
+                : `Your solution for "${data.problems?.title || 'problem'}" requires changes.`;
+
+            const finalMessage = admin_notes ? `${message} Feedback: ${admin_notes}` : message;
+
+            await supabase.from('notifications').insert([{
+                user_id: data.user_id,
+                type: 'submission_update',
+                title: `Submission ${status.charAt(0).toUpperCase() + status.slice(1)}`,
+                message: finalMessage,
+                is_read: false
+            }]);
+        }
+
         res.json(data);
     } catch (error) {
         res.status(500).json({ error: error.message });

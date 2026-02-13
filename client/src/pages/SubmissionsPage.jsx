@@ -89,7 +89,7 @@ const SubmissionsPage = () => {
                                 </div>
 
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
-                                    <div style={{ textAlign: 'right' }}>
+                                    <div style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', gap: '0.5rem', alignItems: 'flex-end' }}>
                                         <span style={{
                                             padding: '0.25rem 0.75rem',
                                             borderRadius: '50px',
@@ -100,6 +100,22 @@ const SubmissionsPage = () => {
                                         }}>
                                             {sub.status.toUpperCase()}
                                         </span>
+
+                                        {sub.admin_notes && (
+                                            <div style={{
+                                                fontSize: '0.75rem',
+                                                color: 'var(--text-white)',
+                                                background: 'rgba(255,255,255,0.05)',
+                                                padding: '0.5rem 0.75rem',
+                                                borderRadius: '10px',
+                                                borderLeft: '2px solid var(--primary)',
+                                                maxWidth: '250px',
+                                                textAlign: 'left'
+                                            }}>
+                                                <strong style={{ color: 'var(--primary)', display: 'block', marginBottom: '2px' }}>Admin Note:</strong>
+                                                {sub.admin_notes}
+                                            </div>
+                                        )}
                                     </div>
 
                                     <div style={{ display: 'flex', gap: '0.75rem' }}>

@@ -7,6 +7,7 @@ const ProblemForm = ({ problem = null, onClose }) => {
         title: problem?.title || '',
         problem_link: problem?.problem_link || '',
         youtube_url: problem?.youtube_url || '',
+        our_video_url: problem?.our_video_url || '',
         pattern_id: problem?.pattern_id || '',
         difficulty: problem?.difficulty || 'Easy',
         platform: problem?.platform || 'LeetCode'
@@ -83,15 +84,27 @@ const ProblemForm = ({ problem = null, onClose }) => {
                         />
                     </div>
 
-                    <div className="form-group">
-                        <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600 }}>YouTube Solution (Optional)</label>
-                        <input
-                            type="url"
-                            placeholder="https://youtube.com/watch?v=..."
-                            value={formData.youtube_url || ''}
-                            onChange={(e) => setFormData({ ...formData, youtube_url: e.target.value })}
-                            style={{ width: '100%' }}
-                        />
+                    <div className="grid" style={{ gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                        <div className="form-group">
+                            <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600 }}>Reference Video</label>
+                            <input
+                                type="url"
+                                placeholder="Reference YouTube URL"
+                                value={formData.youtube_url || ''}
+                                onChange={(e) => setFormData({ ...formData, youtube_url: e.target.value })}
+                                style={{ width: '100%' }}
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600 }}>Our Solution (Recording)</label>
+                            <input
+                                type="url"
+                                placeholder="Our recording URL"
+                                value={formData.our_video_url || ''}
+                                onChange={(e) => setFormData({ ...formData, our_video_url: e.target.value })}
+                                style={{ width: '100%' }}
+                            />
+                        </div>
                     </div>
 
                     <div className="grid" style={{ gridTemplateColumns: '1fr 1fr' }}>
