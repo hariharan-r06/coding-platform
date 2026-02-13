@@ -1,17 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import api from '../services/api';
-import { Users, FileCheck, AlertCircle, Plus, Edit2, Trash2, ExternalLink, X } from 'lucide-react';
-import PatternForm from '../components/admin/PatternForm';
-import ProblemForm from '../components/admin/ProblemForm';
+import { Users, FileCheck, AlertCircle, ExternalLink, Trash2, X } from 'lucide-react';
 
 const AdminDashboard = () => {
     const [submissions, setSubmissions] = useState([]);
     const [stats, setStats] = useState({ total_users: 0, pending_submissions: 0, total_problems: 0 });
     const [loading, setLoading] = useState(true);
-
-    const [isPatternFormOpen, setIsPatternFormOpen] = useState(false);
-    const [isProblemFormOpen, setIsProblemFormOpen] = useState(false);
-    const [editingItem, setEditingItem] = useState(null);
 
     useEffect(() => {
         fetchAdminData();
@@ -66,15 +60,7 @@ const AdminDashboard = () => {
             <header className="flex justify-between items-center mb-8">
                 <div>
                     <h1 className="text-2xl text-primary mb-1">Admin Control Center</h1>
-                    <p className="text-muted">Manage patterns, problems, and review student work.</p>
-                </div>
-                <div className="flex gap-4">
-                    <button onClick={() => setIsPatternFormOpen(true)} className="btn btn-secondary text-sm">
-                        <Plus size={18} /> New Pattern
-                    </button>
-                    <button onClick={() => setIsProblemFormOpen(true)} className="btn btn-primary text-sm shadow-lg shadow-indigo-500/20">
-                        <Plus size={18} /> Add Problem
-                    </button>
+                    <p className="text-muted">Overview of platform statistics and submission reviews.</p>
                 </div>
             </header>
 
@@ -111,9 +97,11 @@ const AdminDashboard = () => {
                 </div>
             </div>
 
-            {/* Submissions Review Table */}
-            <section>
-                <h2 className="text-xl mb-6">Submissions Review</h2>
+            {/* Submissions Review Table - Moved UP and prominent */}
+            <section className="mb-8">
+                <div className="flex justify-between items-center mb-6">
+                    <h2 className="text-xl">Submissions Review</h2>
+                </div>
                 <div className="card glass p-0 overflow-hidden">
                     <div className="overflow-x-auto">
                         <table className="w-full text-left border-collapse">
@@ -177,9 +165,6 @@ const AdminDashboard = () => {
                     </div>
                 </div>
             </section>
-
-            {isPatternFormOpen && <PatternForm onClose={() => { setIsPatternFormOpen(false); fetchAdminData(); }} />}
-            {isProblemFormOpen && <ProblemForm onClose={() => { setIsProblemFormOpen(false); fetchAdminData(); }} />}
         </div>
     );
 };

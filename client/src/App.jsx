@@ -7,6 +7,7 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import UserDashboard from './pages/UserDashboard';
 import AdminDashboard from './pages/AdminDashboard';
+import AdminManagePage from './pages/AdminManagePage';
 import ProblemsPage from './pages/ProblemsPage';
 import SubmissionsPage from './pages/SubmissionsPage';
 import ProfilePage from './pages/ProfilePage';
@@ -85,6 +86,13 @@ const App = () => {
             <ProtectedRoute adminOnly>
               <AppLayout>
                 <AdminDashboard />
+              </AppLayout>
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/manage" element={
+            <ProtectedRoute adminOnly>
+              <AppLayout>
+                <AdminManagePage />
               </AppLayout>
             </ProtectedRoute>
           } />

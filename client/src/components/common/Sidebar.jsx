@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, BookOpen, CheckSquare, User, ShieldCheck, BarChart3 } from 'lucide-react';
+import { LayoutDashboard, BookOpen, CheckSquare, User, ShieldCheck, BarChart3, Settings } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
 const Sidebar = () => {
@@ -14,7 +14,8 @@ const Sidebar = () => {
     ];
 
     if (isAdmin) {
-        links.push({ to: '/admin', icon: <ShieldCheck size={20} />, label: 'Admin Panel', admin: true });
+        links.push({ to: '/admin', icon: <ShieldCheck size={20} />, label: 'Admin', admin: true });
+        links.push({ to: '/admin/manage', icon: <Settings size={20} />, label: 'Manage Content', admin: true });
     }
 
     return (
