@@ -15,6 +15,7 @@ import ProfilePage from './pages/ProfilePage';
 // Components
 import Navbar from './components/common/Navbar';
 import Sidebar from './components/common/Sidebar';
+import MobileNav from './components/common/MobileNav';
 
 const ProtectedRoute = ({ children, adminOnly = false }) => {
   const { user, loading, isAdmin } = useAuth();
@@ -27,15 +28,18 @@ const ProtectedRoute = ({ children, adminOnly = false }) => {
 };
 
 const AppLayout = ({ children }) => {
+  const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
+
   return (
     <div className="app-container">
-      <Navbar />
+      <Navbar onMenuClick={() => setIsSidebarOpen(!isSidebarOpen)} />
       <div className="main-layout">
-        <Sidebar />
+        <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
         <main className="content">
           {children}
         </main>
       </div>
+      {/* <MobileNav /> Removed in favor of Sidebar Drawer */}
     </div>
   );
 };

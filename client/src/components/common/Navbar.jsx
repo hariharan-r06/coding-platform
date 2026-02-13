@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { LogOut, User as UserIcon, Code2 } from 'lucide-react';
+import { LogOut, User as UserIcon, Code2, Menu } from 'lucide-react';
 
-const Navbar = () => {
+const Navbar = ({ onMenuClick }) => {
     const { user, logout } = useAuth();
     const navigate = useNavigate();
 
@@ -14,10 +14,15 @@ const Navbar = () => {
 
     return (
         <nav className="navbar glass border-b border-white/5">
-            <Link to="/" className="flex items-center gap-2 font-bold text-xl text-primary hover:opacity-80 transition-opacity">
-                <Code2 className="text-primary" size={32} strokeWidth={2.5} />
-                <span className="text-white tracking-tight">Code<span className="text-primary">Practice</span></span>
-            </Link>
+            <div className="flex items-center gap-4">
+                <button onClick={onMenuClick} className="p-1 md:hidden text-white/80 hover:text-white transition-colors">
+                    <Menu size={24} />
+                </button>
+                <Link to="/" className="flex items-center gap-2 font-bold text-xl text-primary hover:opacity-80 transition-opacity">
+                    <Code2 className="text-primary" size={32} strokeWidth={2.5} />
+                    <span className="text-white tracking-tight">Code<span className="text-primary">Practice</span></span>
+                </Link>
+            </div>
 
             <div className="flex items-center gap-6">
                 <div className="flex items-center gap-3">

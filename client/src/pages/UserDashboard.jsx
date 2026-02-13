@@ -46,7 +46,7 @@ const UserDashboard = () => {
             </header>
 
             {/* Stats Overview */}
-            <div className="grid grid-cols-3 mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 mb-8 gap-4">
                 <div className="card stat-card glass">
                     <div className="stat-icon" style={{ color: 'var(--primary)', background: 'rgba(99, 102, 241, 0.1)' }}>
                         <Trophy size={28} />
@@ -81,14 +81,14 @@ const UserDashboard = () => {
                 </div>
             </div>
 
-            <div className="grid" style={{ gridTemplateColumns: '2fr 1fr', gap: '2rem' }}>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 {/* Pattern List */}
-                <section>
+                <section className="lg:col-span-2">
                     <div className="flex justify-between items-center mb-4">
                         <h2>Problem Patterns</h2>
                         <button className="btn btn-secondary text-sm">View All</button>
                     </div>
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {patterns.map(pattern => (
                             <PatternCard
                                 key={pattern.id}

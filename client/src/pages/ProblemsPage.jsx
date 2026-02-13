@@ -219,7 +219,7 @@ const ProblemsPage = () => {
 
                                 {/* Accordion Body (Table) */}
                                 {isExpanded && (
-                                    <div style={{ borderTop: '1px solid var(--border)' }}>
+                                    <div style={{ borderTop: '1px solid var(--border)', overflowX: 'auto' }}>
                                         <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.95rem' }}>
                                             <thead>
                                                 <tr style={{ color: 'var(--text-muted)', fontSize: '0.85rem', textAlign: 'left', borderBottom: '1px solid var(--border)' }}>
